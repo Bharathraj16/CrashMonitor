@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    id("maven-publish")
 }
 
 android {
@@ -28,6 +29,24 @@ android {
     }
     kotlinOptions {
         jvmTarget = "11"
+    }
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+        }
+    }
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            create<MavenPublication>("release") {
+                from(components["release"])
+                groupId = "com.github.Bharathraj16"
+                artifactId = "crash-monitor-android"
+                version = "1.0.0"
+            }
+        }
     }
 }
 
